@@ -1,3 +1,5 @@
+import "../Styles/Control.css"
+
 interface ControlProps {
   paused: boolean;
   value: number;
@@ -19,7 +21,7 @@ const Control = ({ paused, value, setValue, name }: ControlProps) => {
       >{`${name} Length`}</h3>
       <div className="controller">
         <button
-          className="control-btn"
+          className="control-btn decrement"
           onClick={decrement}
           id={`${name.toLowerCase()}-decrement`}
           disabled={!paused}
@@ -35,7 +37,7 @@ const Control = ({ paused, value, setValue, name }: ControlProps) => {
           disabled={!paused}
         />
         <button
-          className="control-btn"
+          className="control-btn increment"
           onClick={increment}
           id={`${name.toLowerCase()}-increment`}
           disabled={!paused}

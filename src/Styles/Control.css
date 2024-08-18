@@ -1,0 +1,58 @@
+.controls, .controller {
+  display: flex;
+  flex-direction: row;
+}
+
+.controls {
+  width: 500px;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.controller {
+  justify-content: center;
+  border: 2px solid #14353A;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.control-label {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  font-size: 1.5rem;
+  background-color: #44aebe;
+}
+
+.control-btn:hover{
+  cursor: pointer;
+  background-color: #39919e;
+}
+
+.decrement {
+  border-radius: 8px 0 0 8px;
+  border-right: 2px solid #14353A;
+}
+
+.increment {
+  border-radius: 0 8px 8px 0;
+  border-left: 2px solid #14353A;
+}
+
+.control-input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.control-input::-webkit-inner-spin-button {
+  appearance: none;
+}

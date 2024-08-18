@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../Styles/Timer.css"
 
 interface TimerProps {
   paused: boolean;
