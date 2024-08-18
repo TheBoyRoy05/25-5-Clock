@@ -1,7 +1,8 @@
 import { useState } from "react";
-import "../Styles/App.css";
 import Control from "./Control";
 import Timer from "./Timer";
+import audio from "../Assets/Sounds_Of_Hell.mp3"
+import "../Styles/App.css";
 
 const App = () => {
   const [paused, setPaused] = useState(true);
@@ -31,6 +32,7 @@ const App = () => {
         sessionTime={sessionTime}
         setSession={setSessionTime}
       />
+      <audio src={audio} id="beep" />
     </div>
   );
 };

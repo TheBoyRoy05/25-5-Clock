@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TimerProps {
   paused: boolean;
@@ -10,52 +10,65 @@ interface TimerProps {
 }
 
 const Timer = (props: TimerProps) => {
+  const audio = document.getElementById("beep") as HTMLAudioElement;
   const { paused, breakTime, sessionTime } = props;
   const { setPaused, setBreak, setSession } = props;
   const [label, setLabel] = useState("Session");
-  const [timer, setTimer] = useState("25:00");
+  const [time, setTime] = useState(25 * 60);
+  const timer = useRef<number>();
 
-  const getDeadLine = () => {
-    const deadLine = new Date();
-    deadLine.setMinutes(
-      deadLine.getMinutes() + (label == "Session" ? sessionTime : breakTime)
-    );
-    return deadLine;
+  const displayTime = () => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time) % 60;
+    if (time >= 0) {
+      return (
+        (minutes > 9 ? minutes : "0" + minutes) +
+        ":" +
+        (seconds > 9 ? seconds : "0" + seconds)
+      );
+    } else {
+      audio.play().catch(console.error);
+      setTime((label == "Session" ? breakTime : sessionTime) * 60);
+      setLabel(label == "Session" ? "Break" : "Session");
+    }
   };
 
-  const timeRemaining = (deadline: Date) => {
-    const total = Date.parse(deadline.toUTCString()) - Date.now();
-    const minutes = Math.floor(total / 1000 / 60) % 60;
-    const seconds = Math.floor(total / 1000) % 60;
-    return { total, minutes, seconds };
+  const startStopTimer = () => {
+    if (!paused) clearInterval(timer.current);
+    else {
+      const interval = setInterval(() => {
+        setTime((prev) => prev - 1);
+      }, 1000);
+      timer.current = interval;
+    }
+    setPaused((prev) => !prev);
+  };
+
+  const resetTimer = () => {
+    setBreak(5);
+    setSession(25);
+    setTime(25 * 60);
+    setLabel("Session");
+    audio.pause();
+    audio.currentTime = 0;
+    if (!paused) startStopTimer();
   };
 
   useEffect(() => {
-    console.log(timeRemaining(getDeadLine()));
-  }, []);
-
-  const startTimer = (deadLine: Date) => {
-    const { total, minutes, seconds } = timeRemaining(deadLine);
-    if (total > 0) {
-      setTimer(
-        (minutes > 9 ? minutes : "0" + minutes) +
-          ":" +
-          (seconds > 9 ? seconds : "0" + seconds)
-      );
-    }
-  };
+    setTime((label == "Session" ? sessionTime : breakTime) * 60);
+  }, [sessionTime, breakTime]);
 
   return (
     <>
       <div className="timer">
         <h3 id="timer-label">{label}</h3>
-        <div id="time-left">{timer}</div>
+        <div id="time-left">{displayTime()}</div>
       </div>
       <div className="timer-control">
-        <button id="start_stop">
+        <button id="start_stop" onClick={startStopTimer}>
           <i className={"fa fa-" + (paused ? "play" : "pause")} />
         </button>
-        <button id="reset">
+        <button id="reset" onClick={resetTimer}>
           <i className="fa fa-refresh" />
         </button>
       </div>

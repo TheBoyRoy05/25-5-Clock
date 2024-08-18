@@ -6,11 +6,13 @@ interface ControlProps {
 }
 
 const Control = ({ paused, value, setValue, name }: ControlProps) => {
-  const decrement = () => setValue((prev: number) => prev - 1);
-  const increment = () => setValue((prev: number) => prev + 1);
+  const decrement = () =>
+    setValue((prev: number) => Math.min(Math.max(prev - 1, 1), 60));
+  const increment = () =>
+    setValue((prev: number) => Math.min(Math.max(prev + 1, 1), 60));
 
   return (
-    <div className={`${name.toLowerCase()}-control`}>
+    <div className={"control"}>
       <h3
         className="control-label"
         id={`${name.toLowerCase()}-label`}
@@ -30,6 +32,7 @@ const Control = ({ paused, value, setValue, name }: ControlProps) => {
           value={value}
           onChange={(e) => setValue(Number(e.target.value))}
           id={`${name.toLowerCase()}-length`}
+          disabled={!paused}
         />
         <button
           className="control-btn"
