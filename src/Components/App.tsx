@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Control from "./Control";
 import Timer from "./Timer";
-import audio from "../Assets/Sounds_Of_Hell.mp3"
+import audio from "../assets/Sounds_Of_Hell.mp3"
 import "../Styles/App.css";
 
 const App = () => {
