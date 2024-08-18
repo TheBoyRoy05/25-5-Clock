@@ -16,6 +16,7 @@
 .timer-control {
   width: 100px;
   display: flex;
+  margin-bottom: 10px;
   justify-content: space-around;
 }
 

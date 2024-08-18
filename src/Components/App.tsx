@@ -35,6 +35,7 @@ const App = () => {
         setSession={setSessionTime}
       />
       <audio src={audio} id="beep" />
+      <h4 className="author">By Issac Roy</h4>
     </div>
   );
 };
