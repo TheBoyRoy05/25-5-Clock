@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TimerProps {
   paused: boolean;
@@ -15,7 +15,6 @@ const Timer = (props: TimerProps) => {
   const { setPaused, setBreak, setSession } = props;
   const [label, setLabel] = useState("Session");
   const [time, setTime] = useState(25 * 60);
-  const timer = useRef<number>();
 
   const displayTime = () => {
     const minutes = Math.floor(time / 60);
@@ -34,13 +33,6 @@ const Timer = (props: TimerProps) => {
   };
 
   const startStopTimer = () => {
-    if (!paused) clearInterval(timer.current);
-    else {
-      const interval = setInterval(() => {
-        setTime((prev) => prev - 1);
-      }, 1000);
-      timer.current = interval;
-    }
     setPaused((prev) => !prev);
   };
 
@@ -53,6 +45,22 @@ const Timer = (props: TimerProps) => {
     audio.currentTime = 0;
     if (!paused) startStopTimer();
   };
+
+  useEffect(() => {
+    let interval: number | undefined;
+
+    if (!paused) {
+      interval = setInterval(() => {
+        setTime((prev) => prev - 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [paused]);
 
   useEffect(() => {
     setTime((label == "Session" ? sessionTime : breakTime) * 60);
